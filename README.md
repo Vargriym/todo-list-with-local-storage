@@ -1,4 +1,4 @@
-This is a simple to-do list app, built with vanilla JavaScript.
+This is a simple to-do list app, built using OOP in JavaScript.
 
 Live Demo: https://vargriym.github.io/vanilla-js-todo-list/
 
