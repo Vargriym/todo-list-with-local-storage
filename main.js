@@ -1,67 +1,80 @@
-const button = document.querySelector("button"),
-  container = document.querySelector("#container"),
-  input = document.querySelector("input"),
-  form = document.querySelector("form"),
-  text = document.querySelector(".task-text");
+// grab all elements 
+const form = document.querySelector("[data-form]");
+const lists = document.querySelector("[data-lists]");
+const input = document.querySelector("[data-input]");
 
+//local Storage
+class Storage {
+    static addTodStorage(todoArr){
+        let storage = localStorage.setItem("todo", JSON.stringify(todoArr));
+        return storage;
+    }
 
+    static getStorage(){
+        let storage = localStorage.getItem("todo") === null ? 
+        [] : JSON.parse(localStorage.getItem("todo"));
+        return storage
+    }
+}
 
-form.addEventListener("submit", (eo) => {
-  eo.preventDefault();
-  const task = `
-    <div class="tasks">
-      <p class="task-text">${input.value}</p>
-      <div>
-        <span class="material-icons checkmark icon">
-          done
-          </span>
-        <span class="material-icons trash icon">
-          delete
-          </span>
-      </div>
-    </div>
-    `;
+// empty array 
+let todoArr = Storage.getStorage();
 
-  input.value = "";
-
-  container.innerHTML += task;
+// form part 
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let id = Math.random() * 1000000;
+    const todo = new Todo(id, input.value);
+    todoArr = [...todoArr, todo];
+    UI.displayData();
+    UI.clearInput();
+    //add to storage
+    Storage.addTodStorage(todoArr);
 });
 
+// make object instance 
+class Todo {
+    constructor(id, todo){
+        this.id = id;
+        this.todo = todo;
+    }
+}
 
+// display the todo in the DOM;
+class UI{
+    static displayData(){
+        let displayData = todoArr.map((item) => {
+            return `
+                <div class="todo">
+                <p>${item.todo}</p>
+                <span class="remove" data-id = ${item.id}>🗑️</span>
+                </div>
+            `
+        });
+        lists.innerHTML = (displayData).join(" ");
+    }
+    static clearInput(){
+        input.value = "";
+    }
+    static removeTodo(){
+        lists.addEventListener("click", (e) => {
+            if(e.target.classList.contains("remove")){
+                e.target.parentElement.remove();
+            }
+            let btnId = e.target.dataset.id;
+            //remove from array.
+            UI.removeArrayTodo(btnId);
+        });
+    }
+    static removeArrayTodo(id){
+        todoArr = todoArr.filter((item) => item.id !== +id);
+        Storage.addTodStorage(todoArr);
+    }
+}
 
-container.addEventListener("click", (eo) => {
-  switch (eo.target.className) {
-    case "material-icons trash icon":
-      eo.target.parentElement.parentElement.remove();
-      break;
-
-    case "material-icons checkmark icon":
-      eo.target.classList.add("dn");
-
-      const close = `
-      <span class="material-icons close icon">close</span>`;
-
-      eo.target.parentElement.parentElement
-        .getElementsByClassName("task-text")[0]
-        .classList.add("finished");
-
-      eo.target.parentElement.innerHTML += close;
-
-      break;
-
-    case "material-icons close icon":
-      eo.target.parentElement.parentElement
-        .getElementsByClassName("task-text")[0]
-        .classList.remove("finished");
-      eo.target.classList.add("dn");
-
-      const restoreIcon = `
-      <span class="material-icons checkmark icon">
-          done
-      </span>`;
-
-      eo.target.parentElement.innerHTML += restoreIcon;
-
-      break;
-  }
+//once the browser is loaded
+window.addEventListener("DOMContentLoaded", () => {
+    UI.displayData();
+    //remove from the dom
+    UI.removeTodo();
 });
