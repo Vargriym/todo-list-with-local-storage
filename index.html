@@ -4,35 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <title>To-Do List | Achieve more every day</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/script.js" defer></script>
+    <title>OOP Todo</title>
 </head>
 <body>
   <img src="header.png" alt="">
-  <form>
-    <input type="text" placeholder="What's on your mind?">
-    <button id="post">
-      <span id="post-icon" type="submit" class="material-icons">
-        post_add
-        </span>
-    </button>
-  </form>
-    
-    <section id="container">
-    <div class="tasks">
-      <p class="task-text">Test</p>
-      <div>
-        <span class="material-icons checkmark icon">
-          done
-          </span>
-        <span class="material-icons trash icon">
-          delete
-          </span>
-      </div>
-    </div>  
-  </section>
-    
-   <script src="main.js"></script> 
+    <div class="container">
+        <form class="form" data-form>
+            <input type="text" placeholder="What's on your mind?" data-input>
+            <button class="btn">Submit</button>
+        </form>
+        <div class="lists" data-lists>
+            <!-- <div class="todo">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam, ratione necessitatibus non asperiores 
+                    ex molestiae error veniam accusantium? Asperiores, magni?</p>
+                <span>🗑️</span>
+            </div> -->
+        </div>
+    </div>
 </body>
 </html>
